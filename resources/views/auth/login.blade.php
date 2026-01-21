@@ -28,6 +28,8 @@
     <!-- RTL Css -->
     <link rel="stylesheet" href="{{ asset('template/assets/css/rtl.min.css') }}">
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
 </head>
 
@@ -96,6 +98,15 @@
                                     <h2 class="mb-2 text-center">Sign In</h2>
                                     <p class="text-center">Login to stay connected.</p>
                                     <form method="POST" action="{{ route('login') }}">
+                                        @if ($errors->any())
+                                            <div class="alert alert-danger">
+                                                <ul class="mb-0">
+                                                    @foreach ($errors->all() as $error)
+                                                        <li>{{ $error }}</li>
+                                                    @endforeach
+                                                </ul>
+                                            </div>
+                                        @endif
                                         @csrf
                                         <div class="row">
                                             <div class="col-lg-12">
@@ -106,6 +117,9 @@
                                                         aria-describedby="email" placeholder=" " name="email"
                                                         :value="old('email')" required autofocus
                                                         autocomplete="username">
+                                                    @error('email')
+                                                        <div class="invalid-feedback">{{ $message }}</div>
+                                                    @enderror
                                                 </div>
                                             </div>
                                             <div class="col-lg-12">
@@ -115,6 +129,9 @@
                                                     <input type="password" class="form-control" id="password"
                                                         aria-describedby="password" placeholder=" " name="password"
                                                         required autocomplete="current-password">
+                                                    @error('password')
+                                                        <div class="invalid-feedback">{{ $message }}</div>
+                                                    @enderror
                                                 </div>
                                             </div>
                                             <div class="col-lg-12 d-flex justify-content-between">
@@ -135,10 +152,27 @@
                                             <button type="submit"
                                                 class="btn btn-primary">{{ __('Log in') }}</button>
                                         </div>
-                                        <p class="mt-3 text-center">
-                                            Don’t have an account? <a href="sign-up.html" class="text-underline">Click
-                                                here to sign up.</a>
-                                        </p>
+                                        @if ($errors->has('email') || $errors->has('password'))
+                                            <script>
+                                                Swal.fire({
+                                                    icon: 'error',
+                                                    title: 'Login Gagal!',
+                                                    text: 'Email atau password yang kamu masukkan salah, gess!',
+                                                    confirmButtonColor: '#3a57e8',
+                                                });
+                                            </script>
+                                        @endif
+                                        @if (session('success'))
+                                            <script>
+                                                Swal.fire({
+                                                    icon: 'success',
+                                                    title: 'Berhasil!',
+                                                    text: "{{ session('success') }}",
+                                                    timer: 2000,
+                                                    showConfirmButton: false
+                                                });
+                                            </script>
+                                        @endif
                                     </form>
                                 </div>
                             </div>
