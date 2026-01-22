@@ -65,9 +65,13 @@ class User extends Authenticatable
         return $this->belongsToMany(Kegiatan::class, 'kegiatan_user');
     }
 
+    public function evidences()
+    {
+        return $this->hasMany(KinerjaEvidence::class);
+    }
+
     public function subSatker()
     {
         return $this->belongsTo(SubSatker::class, 'current_sub_satker_id');
     }
-
 }

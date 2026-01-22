@@ -30,4 +30,14 @@ class Kegiatan extends Model
     {
         return $this->belongsTo(User::class, 'created_by');
     }
+
+    public function satker()
+    {
+        return $this->belongsTo(Satker::class, 'satker_id');
+    }
+
+    public function subSatker()
+    {
+        return $this->belongsTo(SubSatker::class, 'sub_satker_id');
+    }
 }
